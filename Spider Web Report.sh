@@ -223,7 +223,7 @@ for page in 1 41 81
 
 do
 	
-line2=$(echo $line | perl -pe 's/http:\/\///g' | cut -d/ -f1-3 | perl -pe 's/https:\/\///g'  | sed 's/\/*$//g')
+line2=$(echo $line | perl -pe 's/https:\/\/www.//g;s/http:\/\/www.//g'| cut -d/ -f1-3 )
 
 curl -sA "$useragent" \
 --url "https://www.bing.com/search?q=site:$line2/&start=1&count=$page&filter=0" -o /Users/$USER/Desktop/Reportes\ S.W.R./.temp/webd.html && \
