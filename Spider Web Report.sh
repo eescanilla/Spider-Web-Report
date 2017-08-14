@@ -238,7 +238,7 @@ echo -ne " Buscando subdirectorios, $cinco$total1$fin en total.\r"
 done
 done
 
-cat  /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"  |  perl -pe 's/http:\/\///g' | perl -pe 's/https:\/\///g' | sed 's/\/*$//g' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Directorios.txt"
+cat  /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"  | perl -pe 's/https:\/\/www.//g;s/http:\/\/www.//g;s/\/$//' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Directorios.txt"
 
 rm -rf  /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"
 
