@@ -114,7 +114,7 @@ cat /Users/$USER/Desktop/Reportes\ S.W.R./.temp/webc.html | awk 'NR!~/^(48)$/' |
 more /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web2c.html | perl -pe 's/href=//g' | grep "$webs"|sort| uniq | cut -f1 -d";" \
 > /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios/"$webs-Crawled".txt
 
-cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios/"$webs-Crawled.txt" |  perl -pe 's/http:\/\///g' | perl -pe 's/https:\/\///g' | cut -d/ -f1-2 | sed 's/\/*$//g' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt"
+cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios/"$webs-Crawled.txt" | perl -pe 's/https:\/\/www.//g;s/http:\/\/www.//g' | cut -d/ -f1-2 | sed 's/\/*$//g' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt"
 
 total=$(wc -l /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt"  | awk '{print $1}')
 #echo -ne " Buscando desde resultado$cinco $page$tres,$cinco $total$tres Archivos encontrados.\r$fin"
