@@ -70,7 +70,7 @@ $tres ##########################$siete Tool by Jonathan Burgos Saldivia$tres ###
 echo -n " Ponga aqui el sitio web objetivo: $cinco" 
 read -t 60 web
 echo $fin
-webs=$(echo "$web" | perl -pe 's/https:\/\/www.//g;s/http:\/\/www.//g;s/\/$//;s/\//-/g' )
+webs=$(echo "$web" | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g;s/\/$//;s/\//-/g' )
 
 if [ -z "$webs" ]; then
 	echo -e $uno "\n Se acabó el tiempo.\n$fin"
@@ -114,7 +114,7 @@ cat /Users/$USER/Desktop/Reportes\ S.W.R./.temp/webc.html | awk 'NR!~/^(48)$/' |
 more /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web2c.html | perl -pe 's/href=//g' | grep "$webs"|sort| uniq | cut -f1 -d";" \
 > /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios/"$webs-Crawled".txt
 
-cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios/"$webs-Crawled.txt" | perl -pe 's/https:\/\/www.//g;s/http:\/\/www.//g' | cut -d/ -f1-2 | sed 's/\/*$//g' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt"
+cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios/"$webs-Crawled.txt" | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g' | cut -d/ -f1-2 | sed 's/\/*$//g' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt"
 
 total=$(wc -l /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt"  | awk '{print $1}')
 #echo -ne " Buscando desde resultado$cinco $page$tres,$cinco $total$tres Archivos encontrados.\r$fin"
@@ -238,7 +238,7 @@ echo -ne " Buscando subdirectorios, $cinco$total1$fin en total.\r"
 done
 done
 
-cat  /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"  | perl -pe 's/https:\/\/www.//g;s/http:\/\/www.//g;s/\/$//' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Directorios.txt"
+cat  /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"  | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g;s/\/$//' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Directorios.txt"
 
 rm -rf  /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"
 
