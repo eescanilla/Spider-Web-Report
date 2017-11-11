@@ -80,9 +80,19 @@ fi
 
 #Creacion de carpetas
 
+OS=`uname`
+
+if [ "${OS}" = "Linux" ] ; then
+tempf=~/Desktop/Reports\ S.W.R./.temp
+swrf=~/Desktop/Reports\ S.W.R.
+webf=~/Desktop/Reports\ S.W.R./$webs
+fi
+
+if [ "$OS" == "Darwin" ]; then
 tempf=/Users/$USER/Desktop/Reports\ S.W.R./.temp
 swrf=/Users/$USER/Desktop/Reports\ S.W.R.
 webf=/Users/$USER/Desktop/Reports\ S.W.R./$webs
+fi
 
 rm -rf "$tempf" 2>/dev/null
 mkdir "$swrf" 2>/dev/null
@@ -96,18 +106,17 @@ do
 
 #Busqueda de archivos
 
-	curl -sA "$useragent" \
-	--url "www.bing.com/search?q=site:$web+filetype:(pdf+OR+ps+OR+dwf+OR+kml+OR+kmz+OR+xls+OR+ppt+OR+doc+OR+rtf+OR+swf+OR+txt+OR+sql)&first=$page&count=40&filter=0" \
-	-o "$tempf"/web.html && \
-	cat "$tempf"/web.html | awk 'NR!~/^(48)$/' | perl -pe 's/\s/\n/g' | grep "href=\"" \
-	| grep -v "&amp" | grep "$web"| uniq | tr -d '"' >> "$tempf"/web2.html && \
+curl -sA "$useragent" --url "www.bing.com/search?q=site:$web+filetype:(pdf+OR+ps+OR+dwf+OR+kml+OR+kmz+OR+xls+OR+ppt+OR+doc+OR+rtf+OR+swf+OR+txt+OR+sql)&first=$page&count=40&filter=0" \
+-o "$tempf"/web.html && \
+cat "$tempf"/web.html | awk 'NR!~/^(48)$/' | perl -pe 's/\s/\n/g' | grep "href=\"" \
+| grep -v "&amp" | grep "$web"| uniq | tr -d '"' >> "$tempf"/web2.html && \
 more "$tempf"/web2.html | perl -pe 's/href=//g' | grep "$web"|sort| uniq | cut -f1 -d";" | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g;s/\/$//' \
 > "$swrf"/"$webs"/"$webs-Files.txt"
 
 #Busqueda de correos
 
-curl -sA "$useragent" \
---url "www.bing.com/search?q=site:*$web+inbody:mail&first=$page&count=40&filter=0" -o "$tempf"/Mails.html && \
+curl -sA "$useragent" --url "www.bing.com/search?q=site:*$web+inbody:mail&first=$page&count=40&filter=0" \
+-o "$tempf"/Mails.html && \
 cat "$tempf"/Mails.html  \
 | perl -pe 's/"|{|}|:|;|,|\(|\)/\n/g;s/\s/\n/g;s/<strong>//g;s/</\n/g' \
 | grep -E '@.*\.' | grep -v "/" | sort | uniq >> "$tempf"/Mails.txt
@@ -149,8 +158,8 @@ fi
 
 #Busqueda de directorios
 
-curl -sA "$useragent" \
---url "https://www.bing.com/search?q=site:$web&first=$page&count=40&filter=0" -o "$tempf"/webc.html && \
+curl -sA "$useragent" --url "https://www.bing.com/search?q=site:$web&first=$page&count=40&filter=0" \
+-o "$tempf"/webc.html && \
 cat "$tempf"/webc.html | awk 'NR!~/^(48)$/' | perl -pe 's/\s/\n/g' | grep "href=\"" | grep "$web" | tr -d '"'| perl -pe 's/href=//g'| grep -v "&amp;" | grep -v "=" | grep -o ".*/" | sort | uniq >> "$tempf"/web2c.html && \
 more "$tempf"/web2c.html | perl -pe 's/href=//g' | grep "$web" |sort| uniq | cut -f1 -d";" \
 > "$swrf"/"$webs"/"$webs-Crawled".txt
@@ -260,9 +269,7 @@ then
 echo -ne " $cinco$craw$fin directories found.\n"
 fi
 
-echo
-echo -ne "Look the results in: $cinco"$swrf"/"$webs"$fin" | sed 's/^/ /'
-echo
+echo -ne "\nLook the results in: $cinco"$swrf"/"$webs"$fin\n" | sed 's/^/ /'
 
 #Borrando archivos temporales y otras cosas
 
