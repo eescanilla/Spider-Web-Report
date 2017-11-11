@@ -7,9 +7,9 @@ uno=$(tput setaf 1)
 dos=$(tput setaf 2)
 tres=$(tput setaf 3)
 cuatro=$(tput setaf 4)
-cinco=$(tput setaf 5)
+cinco=$(tput setaf 172)
 seis=$(tput setaf 6)
-siete=$(tput setaf 7)
+siete=$(tput setaf 15)
 ocho=$(tput setaf 8)
 nueve=$(tput setaf 9)
 diez=$(tput setaf 10)
@@ -17,7 +17,7 @@ fin=$(tput sgr0)
 
 usersagents ()
 {
-useragents=$(echo 'Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53 \n
+useragentb=$(echo 'Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53 \n
 Mozilla/5.0 (iPad; CPU OS 9_0 like Mac OS X) AppleWebKit/601.1.17 (KHTML, like Gecko) Version/8.0 Mobile/13A175 Safari/600.1.4 \n
 Mozilla/5.0 (iPad; CPU OS 9_3_3 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/50.0.2661.95 Mobile/13G34 Safari/601.1.46 \n
 Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36 \n
@@ -44,10 +44,10 @@ Mozilla/5.0 (Nintendo WiiU) AppleWebKit/536.30 (KHTML, like Gecko) NX/3.0.4.2.12
 Mozilla/5.0 (Windows Phone 10.0; Android 4.2.1; Xbox; Xbox One) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Mobile Safari/537.36 Edge/13.10586 \n
 Mozilla/5.0 (PlayStation 4 3.11) AppleWebKit/537.73 (KHTML, like Gecko) \n
 Mozilla/5.0 (X11; U; Linux armv7l like Android; en-us) AppleWebKit/531.2+ (KHTML, like Gecko) Version/5.0 Safari/533.2+ Kindle/3.0+ \n
-Mozilla/5.0 (Linux; U; en-US) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)')
+Mozilla/5.0 (Linux; U; en-US) AppleWebKit/528.5+ (KHTML, like Gecko, Safari/528.5+) Version/4.0 Kindle/3.0 (screen 600x800; rotate)'| grep -v ^$)
 
-random=$(echo $RANDOM % 27 + 1 | bc)
-useragent=$(echo -e $useragents | sed -n "${random}p")
+random=$(echo $(($RANDOM%27)))
+useragent=$(echo -e $useragentb | sed -n "${random}p")
 }
 
 usersagents
@@ -58,196 +58,219 @@ clear && echo "
  $(tput setaf 124) (   \`  )  )\  (()/(  ))\  )(    )\))(    ))\  )\())  )(    ))\ \`  )    (   )(   )\())
  $(tput setaf 172) )\  /(/( ((_)  ((_))/((_)(()\  ((_)()\  /((_)((_)\  (()\  /((_)/(/(    )\ (()\ (_))/ 
  $(tput setaf 178)((_)((_)_\ (_)  _| |(_))   ((_) _(()((_)(_))  | |(_)  ((_)(_)) ((_)_\  ((_) ((_)| |_  
- $(tput setaf 247)(_-<| '_ \)| |/ _\` |/ -_) | '_| \ V  V // -_) | '_ \ | '_|/ -_)| '_ \)/ _ \| '_||  _| 
+ $(tput setaf 15)(_-<| '_ \)| |/ _\` |/ -_) | '_| \ V  V // -_) | '_ \ | '_|/ -_)| '_ \)/ _ \| '_||  _| 
  /__/| .__/ |_|\__,_|\___| |_|    \_/\_/ \___| |_.__/ |_|  \___|| .__/ \___/|_|   \__| 
      |_|                                                        |_|                    
- $(tput setaf 94)--------------------------------------------------------------------------------------$(tput sgr0)
 
-$tres ############$siete Ejemplos de uso: apple.com, apple.com/es, apple.com/es/icloud$tres ###########$fin
-$tres ##########################$siete Tool by Jonathan Burgos Saldivia$tres ##########################$fin
+$nueve ((((((((((($siete S.W.R. search for files, emails and directories on websites $nueve))))))))))))$fin
+$nueve (((((((((((((((((((((((($siete Script by Jonathan Burgos Saldivia$nueve )))))))))))))))))))))))))$fin 
+
+$(tput setaf 15) --------------------------------------------------------------------------------------$(tput sgr0)
 "
 
-echo -n " Ponga aqui el sitio web objetivo: $cinco" 
+echo -n " Target website: $cinco" 
 read -t 60 web
 echo $fin
+web=$(echo "$web" | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g;s/\/$//' )
 webs=$(echo "$web" | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g;s/\/$//;s/\//-/g' )
 
 if [ -z "$webs" ]; then
-	echo -e $uno "\n Se acabó el tiempo.\n$fin"
+	echo -e $uno "\n Time is over.\n$fin"
 	exit 2
 fi
 
-if [[ "$webs" == *"http"* ]]; then
-	echo -e $uno "No usar \"http(s)\" al principio de la url.\n$fin"
-	exit 2
-fi
+#Creacion de carpetas
 
-rm -rf /Users/$USER/Desktop/Reportes\ S.W.R./.temp 2>/dev/null
-mkdir /Users/$USER/Desktop/Reportes\ S.W.R. 2>/dev/null
-mkdir /Users/$USER/Desktop/Reportes\ S.W.R./$webs 2>/dev/null
-mkdir /Users/$USER/Desktop/Reportes\ S.W.R./.temp 2>/dev/null
-mkdir /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos 2>/dev/null
-mkdir /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Correos 2>/dev/null
-mkdir /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios 2>/dev/null
+tempf=/Users/$USER/Desktop/Reports\ S.W.R./.temp
+swrf=/Users/$USER/Desktop/Reports\ S.W.R.
+webf=/Users/$USER/Desktop/Reports\ S.W.R./$webs
+
+rm -rf "$tempf" 2>/dev/null
+mkdir "$swrf" 2>/dev/null
+mkdir "$webf" 2>/dev/null
+mkdir "$tempf" 2>/dev/null
+
+#Bucle con Curl
 
 for page in 1 41 81 121 161 201 241 281 321 361 401 441 481 521 561 601 641 681 721 761 801 841 881 821 861 901 941 981 1021
 do
+
+#Busqueda de archivos
+
 	curl -sA "$useragent" \
-	--url "www.bing.com/search?q=site:$webs+filetype:(pdf+OR+ps+OR+dwf+OR+kml+OR+kmz+OR+xls+OR+ppt+OR+doc+OR+rtf+OR+swf+OR+txt+OR+sql)&first=$page&count=40&filter=0" \
-	-o /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web.html && \
-	cat /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web.html | awk 'NR!~/^(48)$/' | perl -pe 's/\s/\n/g' | grep "href=\"" \
-	| grep -v "&amp" | grep "$webs"| uniq | tr -d '"' >> /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web2.html && \
-more /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web2.html | perl -pe 's/href=//g' | grep "$webs"|sort| uniq | cut -f1 -d";" \
-> /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt"  
+	--url "www.bing.com/search?q=site:$web+filetype:(pdf+OR+ps+OR+dwf+OR+kml+OR+kmz+OR+xls+OR+ppt+OR+doc+OR+rtf+OR+swf+OR+txt+OR+sql)&first=$page&count=40&filter=0" \
+	-o "$tempf"/web.html && \
+	cat "$tempf"/web.html | awk 'NR!~/^(48)$/' | perl -pe 's/\s/\n/g' | grep "href=\"" \
+	| grep -v "&amp" | grep "$web"| uniq | tr -d '"' >> "$tempf"/web2.html && \
+more "$tempf"/web2.html | perl -pe 's/href=//g' | grep "$web"|sort| uniq | cut -f1 -d";" | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g;s/\/$//' \
+> "$swrf"/"$webs"/"$webs-Files.txt"
+
+#Busqueda de correos
 
 curl -sA "$useragent" \
---url "www.bing.com/search?q=site:*$webs+inbody:mail&first=$page&count=40&filter=0" -o /Users/$USER/Desktop/Reportes\ S.W.R./.temp/Correos.html && \
-cat /Users/$USER/Desktop/Reportes\ S.W.R./.temp/Correos.html  \
+--url "www.bing.com/search?q=site:*$web+inbody:mail&first=$page&count=40&filter=0" -o "$tempf"/Mails.html && \
+cat "$tempf"/Mails.html  \
 | perl -pe 's/"|{|}|:|;|,|\(|\)/\n/g;s/\s/\n/g;s/<strong>//g;s/</\n/g' \
-| grep -E '@.*\.' | grep -v "/" | sort | uniq >> /Users/$USER/Desktop/Reportes\ S.W.R./.temp/Correos.txt
+| grep -E '@.*\.' | grep -v "/" | sort | uniq >> "$tempf"/Mails.txt
 #exportar a resultado final
-cat /Users/$USER/Desktop/Reportes\ S.W.R./.temp/Correos.txt  | sort | uniq | perl -pe 's/\.$//g' > /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Correos/"$webs-Correos.txt"
+cat "$tempf"/Mails.txt  | sort | uniq | perl -pe 's/\.$//g' > "$swrf"/"$webs"/"$webs-Mails.txt"
+
+#Funcion suma
+
+suma ()
+{
+if [ -f "$swrf"/"$webs"/"$webs-Files.txt" ]; then
+total=$(wc -l "$swrf"/"$webs"/"$webs-Files.txt" | awk '{print $1}')
+else
+total=0
+fi
+
+if [ -f "$swrf"/"$webs"/"$webs-Mails.txt" ]; then
+lines=$(wc -l "$swrf"/"$webs"/"$webs-Mails.txt" | awk '{print $1}')
+else
+lines=0
+fi
+
+if [ -f "$swrf"/"$webs"/"$webs-Crawled1.txt" ]; then
+craw=$(wc -l "$swrf"/"$webs"/"$webs-Crawled1.txt" | awk '{print $1}')
+else
+craw=0
+fi
+}
+
+suma 
+
+totalinicial=$(($total + $lines + $craw))
+
+#Cortar bucle
+
+if [[ "$totalinicial" == "$totalfinal" ]]; then
+break
+fi
+
+#Busqueda de directorios
 
 curl -sA "$useragent" \
---url "https://www.bing.com/search?q=site:$webs/&start=1&count=$page&filter=0" -o /Users/$USER/Desktop/Reportes\ S.W.R./.temp/webc.html && \
-cat /Users/$USER/Desktop/Reportes\ S.W.R./.temp/webc.html | awk 'NR!~/^(48)$/' | perl -pe 's/\s/\n/g' | grep "href=\"" | grep "$webs"| tr -d '"'| perl -pe 's/href=//g'| grep -v "&amp;" | grep -v "=" | grep -o ".*/" | sort | uniq >> /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web2c.html && \
-more /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web2c.html | perl -pe 's/href=//g' | grep "$webs"|sort| uniq | cut -f1 -d";" \
-> /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios/"$webs-Crawled".txt
+--url "https://www.bing.com/search?q=site:$web&first=$page&count=40&filter=0" -o "$tempf"/webc.html && \
+cat "$tempf"/webc.html | awk 'NR!~/^(48)$/' | perl -pe 's/\s/\n/g' | grep "href=\"" | grep "$web" | tr -d '"'| perl -pe 's/href=//g'| grep -v "&amp;" | grep -v "=" | grep -o ".*/" | sort | uniq >> "$tempf"/web2c.html && \
+more "$tempf"/web2c.html | perl -pe 's/href=//g' | grep "$web" |sort| uniq | cut -f1 -d";" \
+> "$swrf"/"$webs"/"$webs-Crawled".txt
 
-cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Directorios/"$webs-Crawled.txt" | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g' | cut -d/ -f1-2 | sed 's/\/*$//g' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt"
+#Crear resultado final de directorios
 
-total=$(wc -l /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt"  | awk '{print $1}')
-#echo -ne " Buscando desde resultado$cinco $page$tres,$cinco $total$tres Archivos encontrados.\r$fin"
-lines=$(wc -l /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Correos/"$webs-Correos.txt" | awk '{print $1}')
-craw=$(wc -l /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" | awk '{print $1}')
+cat "$swrf"/"$webs"/"$webs-Files.txt" "$swrf"/"$webs"/"$webs-Crawled.txt" | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g' | sed 's%/[^/]*$%/%' | sed 's/\/*$//g' | sort | uniq > "$swrf"/"$webs"/"$webs-Crawled1.txt"
 
-echo -ne " Buscando desde resultado$cinco $page$fin;$cinco $total$fin archivos, $cinco$lines$fin correos y $cinco$craw$fin directorios encontrados.\r"
+#Suma de resultados encontrados
+
+suma
+
+totalfinal=$(($total + $lines + $craw))
+
+#Resultados en directo
+
+echo -ne " $cinco$page$fin results;$cinco $total$fin files, $cinco$lines$fin mails and $cinco$craw$fin directories found.\r"
 
 done
+
 echo -ne " \033[0K\r" && echo -ne " \033[0K\r"
 
-inicio=`expr $total / 2`
+inicio=`expr $total / 3`
 for i in $(eval echo "{$inicio..$total}")
 do
-echo -ne " $cinco$i$fin archivos encontrados en total.\r"
+echo -ne " $cinco$i$fin files found.\r"
 sleep .000001
 inicio=$(echo "$total")
 done
 
-echo ""
+echo
 
-doc=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.doc *$' | uniq | wc -l | awk '{print $1}')
+doc=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.doc *$' | uniq | wc -l | awk '{print $1}')
 if [ "$doc" != 0 ]
 then
-echo -ne " $cinco$doc$fin doc encontrados.\n"
+echo -ne " $cinco$doc$fin doc found.\n"
 fi
 
-docx=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.docx *$' | uniq | wc -l | awk '{print $1}')
+docx=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.docx *$' | uniq | wc -l | awk '{print $1}')
 if [ "$docx" != 0 ]
 then
-echo -ne " $cinco$docx$fin docx encontrados.\n"
+echo -ne " $cinco$docx$fin docx found.\n"
 fi
 
-pdf=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.pdf *$' | uniq | wc -l | awk '{print $1}')
+pdf=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.pdf *$' | uniq | wc -l | awk '{print $1}')
 if [ "$pdf" != 0 ]
 then
-echo -ne " $cinco$pdf$fin pdf encontrados.\n"
+echo -ne " $cinco$pdf$fin pdf found.\n"
 fi
 
-ppt=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.ppt *$' | uniq | wc -l | awk '{print $1}')
+ppt=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.ppt *$' | uniq | wc -l | awk '{print $1}')
 if [ "$ppt" != 0 ]
 then
-echo -ne " $cinco$ppt$fin ppt encontrados.\n"
+echo -ne " $cinco$ppt$fin ppt found.\n"
 fi
 
-pptx=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.pptx *$' | uniq | wc -l | awk '{print $1}')
+pptx=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.pptx *$' | uniq | wc -l | awk '{print $1}')
 if [ "$pptx" != 0 ]
 then
-echo -ne " $cinco$pptx$fin pptx encontrados.\n"
+echo -ne " $cinco$pptx$fin pptx found.\n"
 fi
 
-rtf=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.rtf *$' | uniq | wc -l | awk '{print $1}')
+rtf=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.rtf *$' | uniq | wc -l | awk '{print $1}')
 if [ "$rtf" != 0 ]
 then
-echo -ne " $cinco$rtf$fin rtf encontrados.\n"
+echo -ne " $cinco$rtf$fin rtf found.\n"
 fi
 
-sql=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.sql *$' | uniq | wc -l | awk '{print $1}')
+sql=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.sql *$' | uniq | wc -l | awk '{print $1}')
 if [ "$sql" != 0 ]
 then
-echo -ne " $cinco$sql$fin sql encontrados.\n"
+echo -ne " $cinco$sql$fin sql found.\n"
 fi
 
-txt=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.txt *$' | uniq | wc -l | awk '{print $1}')
+txt=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.txt *$' | uniq | wc -l | awk '{print $1}')
 if [ "$txt" != 0 ]
 then
-echo -ne " $cinco$txt$fin txt encontrados.\n"
+echo -ne " $cinco$txt$fin txt found.\n"
 fi
 
-xls=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.xls *$' | uniq | wc -l | awk '{print $1}')
+xls=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.xls *$' | uniq | wc -l | awk '{print $1}')
 if [ "$xls" != 0 ]
 then
-echo -ne " $cinco$xls$fin xls encontrados.\n"
+echo -ne " $cinco$xls$fin xls found.\n"
 fi
 
-xlsx=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -i '.xlsx *$' | uniq | wc -l | awk '{print $1}')
+xlsx=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -i '.xlsx *$' | uniq | wc -l | awk '{print $1}')
 if [ "$xlsx" != 0 ]
 then
-echo -ne " $cinco$xlsx$fin xlsx encontrados.\n"
+echo -ne " $cinco$xlsx$fin xlsx found.\n"
 fi
 
-otros=$(cat /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Archivos/"$webs-Archivos.txt" | egrep -vi '.pdf *$|.ps *$|.dwf *$|.kml *$|.kmz *$|.xls *$|.xlsx *$|.ppt *$|.pptx *$|.doc *$|.docx *$|.rtf *$|.swf *$|.txt *$|.sql *$' | uniq | wc -l | awk '{print $1}')
+otros=$(cat "$swrf"/"$webs"/"$webs-Files.txt" | egrep -vi '.pdf *$|.ps *$|.dwf *$|.kml *$|.kmz *$|.xls *$|.xlsx *$|.ppt *$|.pptx *$|.doc *$|.docx *$|.rtf *$|.swf *$|.txt *$|.sql *$' | uniq | wc -l | awk '{print $1}')
 if [ "$otros" != 0 ]
 then
-echo -ne " $cinco$otros$fin otros encontrados.\n"
+echo -ne " $cinco$otros$fin others found.\n"
 fi
 
-Correos=$(wc -l /Users/$USER/Desktop/Reportes\ S.W.R./$webs/Correos/"$webs-Correos.txt" | awk '{print $1}')
-if [ "$Correos" != 0 ]
+Mails=$(wc -l "$swrf"/"$webs"/"$webs-Mails.txt" | awk '{print $1}')
+if [ "$Mails" != 0 ]
 then
-echo -ne " $cinco$Correos$fin correos encontrados.\n"
+echo -ne " $cinco$Mails$fin mails found.\n"
 fi
 
 if [ "$craw" != 0 ]
 then
-echo -ne " $cinco$craw$fin directorios encontrados.\n"
+echo -ne " $cinco$craw$fin directories found.\n"
 fi
 
 echo
-
-#subdirectorios
-
-cat /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" | while read line ; do
-
-for page in 1 41 81
-
-do
-	
-line2=$(echo $line | perl -pe 's/https:\/\/www.//g;s/http:\/\/www.//g'| cut -d/ -f1-3 )
-
-curl -sA "$useragent" \
---url "https://www.bing.com/search?q=site:$line2/&start=1&count=$page&filter=0" -o /Users/$USER/Desktop/Reportes\ S.W.R./.temp/webd.html && \
-cat /Users/$USER/Desktop/Reportes\ S.W.R./.temp/webd.html | awk 'NR!~/^(48)$/' | perl -pe 's/\s/\n/g' | grep "href=\"" | grep "$webs" | tr -d '"'| perl -pe 's/href=//g'| grep -v "&amp;" | grep -v "=" | grep -o ".*/" | sort | uniq >> /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web2d.html && \
-more /Users/$USER/Desktop/Reportes\ S.W.R./.temp/web2d.html | perl -pe 's/href=//g' | grep "$webs" |sort| uniq | cut -f1 -d";" \
-> /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"
-
-total1=$(wc -l /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt" | awk '{print $1}')
-
-echo -ne " Buscando subdirectorios, $cinco$total1$fin en total.\r"
-
-done
-done
-
-cat  /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"  | perl -pe 's/http:\/\/www.//g;s/https:\/\/www.//g;s/http:\/\///g;s/https:\/\///g;s/\/$//' | sort | uniq > /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Directorios.txt"
-
-rm -rf  /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled1.txt" /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Crawled2.txt"
-
-total2=$(wc -l /Users/$USER/Desktop/Reportes\ S.W.R./"$webs"/Directorios/"$webs-Directorios.txt" | awk '{print $1}')
-echo -ne " \033[0K\r"
-echo -n " $cinco$total2$fin subdirectorios encontrados."
-echo
+echo -ne "Look the results in: $cinco"$swrf"/"$webs"$fin" | sed 's/^/ /'
 echo
 
-###
+#Borrando archivos temporales y otras cosas
 
-rm -rf /Users/$USER/Desktop/Reportes\ S.W.R./.temp
+mv "$swrf"/"$webs"/"$webs-Crawled1.txt"  "$swrf"/"$webs"/"$webs-Directories.txt" && rm -rf "$tempf" "$swrf"/"$webs"/"$webs"-Crawled*
+
+cat "$swrf"/"$webs"/"$webs-Files.txt" | grep -q $web || rm -rf "$swrf"/"$webs"/"$webs-Files.txt"
+
+cat "$swrf"/"$webs"/"$webs-Mails.txt" | grep -q $web || rm -rf "$swrf"/"$webs"/"$webs-Mails.txt"
+
+cat "$swrf"/"$webs"/"$webs-Directories.txt" | grep -q $web || rm -rf "$swrf"/"$webs"/"$webs-Directories.txt"
