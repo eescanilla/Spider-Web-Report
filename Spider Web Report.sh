@@ -269,7 +269,7 @@ then
 echo -ne " $cinco$craw$fin directories found.\n"
 fi
 
-echo -ne "\nLook the results in: $cinco"$swrf"/"$webs"$fin\n" | sed 's/^/ /'
+echo -e "\nLook the results in: $cinco"$swrf"/"$webs"$fin\n" | sed 's/^/ /'
 
 #Borrando archivos temporales y otras cosas
 
