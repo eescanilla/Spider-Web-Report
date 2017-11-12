@@ -277,6 +277,6 @@ mv "$swrf"/"$webs"/"$webs-Crawled1.txt"  "$swrf"/"$webs"/"$webs-Directories.txt"
 
 cat "$swrf"/"$webs"/"$webs-Files.txt" | grep -q $web || rm -rf "$swrf"/"$webs"/"$webs-Files.txt"
 
-cat "$swrf"/"$webs"/"$webs-Mails.txt" | grep -q $web || rm -rf "$swrf"/"$webs"/"$webs-Mails.txt"
+cat "$swrf"/"$webs"/"$webs-Mails.txt" | grep -q "@" || rm -rf "$swrf"/"$webs"/"$webs-Mails.txt"
 
 cat "$swrf"/"$webs"/"$webs-Directories.txt" | grep -q $web || rm -rf "$swrf"/"$webs"/"$webs-Directories.txt"
